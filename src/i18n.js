@@ -44,9 +44,12 @@ export const initI18n = () =>
     .init({
       resources,
       fallbackLng: 'es',
+      supportedLngs: ['en', 'es'],
+      nonExplicitSupportedLngs: true, // en-US -> en
       detection: {
-        // El runner de Playwright aporta navigator/headers -> priorízalos
-        order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+        // Prioriza lo que define el navegador del runner
+        order: ['navigator', 'htmlTag', 'querystring', 'cookie', 'localStorage'],
+        caches: [], // sin cache para que no “pegue” un idioma previo
       },
       interpolation: { escapeValue: false },
     });
