@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-// Hacemos que yup emita códigos de error (que luego traducimos con i18next)
+// yup emitirá CÓDIGOS que luego traducimos con i18next en la View
 yup.setLocale({
   mixed: {
     required: 'errors.required',
@@ -11,7 +11,6 @@ yup.setLocale({
   },
 });
 
-// esquema a partir de URLs existentes
 export const makeUrlSchema = (existingUrls) => {
   const normalized = existingUrls.map((u) => u.trim());
   return yup
@@ -22,7 +21,6 @@ export const makeUrlSchema = (existingUrls) => {
     .notOneOf(normalized);
 };
 
-// Valida y devuelve una Promesa que, en caso de error, tendrá .errors con códigos
 export const validateUrl = (url, existingUrls) => {
   const schema = makeUrlSchema(existingUrls);
   return schema.validate(url, { abortEarly: false });

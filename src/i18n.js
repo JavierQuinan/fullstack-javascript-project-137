@@ -1,6 +1,5 @@
 import i18next from 'i18next';
 
-// Recursos mínimamente necesarios para esta etapa
 const resources = {
   es: {
     translation: {
@@ -16,6 +15,7 @@ const resources = {
       },
       ui: {
         feedsTitle: 'Feeds',
+        postsTitle: 'Posts',
       },
     },
   },
@@ -31,12 +31,12 @@ const resources = {
       },
       ui: {
         feedsTitle: 'Feeds',
+        postsTitle: 'Posts',
       },
     },
   },
 };
 
-// Devuelve una Promesa (sin async/await)
 export const initI18n = (lng = 'es') =>
   i18next.init({
     lng,

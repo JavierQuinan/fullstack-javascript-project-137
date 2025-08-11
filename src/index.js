@@ -16,21 +16,21 @@ const elements = {
   feedsContainer: qs('#feeds'),
 };
 
-// id simple (evitamos depender de crypto en navegadores viejos)
+// ID simple para entidades
 const uid = () => (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
 
 const state = {
   feeds: [], // [{ id, url, title, description }]
   posts: [], // [{ id, feedId, title, link, description }]
   form: {
-    processState: 'idle',    // 'idle' | 'validating' | 'sending'
-    errorCode: null,         // código i18n de error o null
+    processState: 'idle', // 'idle' | 'validating' | 'sending'
+    errorCode: null,      // string | null (código i18n)
   },
 };
 
 const getExistingUrls = (st) => st.feeds.map((f) => f.url);
 
-// pipeline: validar -> descargar -> parsear -> guardar
+// ---- Pipeline de agregado: validar -> descargar -> parsear -> guardar
 const addFeedPipeline = (url, watched) =>
   validateUrl(url, getExistingUrls(watched))
     .then(() => {
@@ -42,11 +42,7 @@ const addFeedPipeline = (url, watched) =>
       const feedId = uid();
       const newFeed = { id: feedId, url, title: feed.title, description: feed.description };
       const newPosts = items.map((it) => ({
-        id: uid(),
-        feedId,
-        title: it.title,
-        link: it.link,
-        description: it.description,
+        id: uid(), feedId, title: it.title, link: it.link, description: it.description,
       }));
 
       watched.feeds = [newFeed, ...watched.feeds];
@@ -54,12 +50,55 @@ const addFeedPipeline = (url, watched) =>
 
       elements.form.reset();
       elements.input.focus();
-      watched.form.errorCode = null; // éxito -> mensaje de éxito en View
+      watched.form.errorCode = null; // éxito -> mensaje traducido en View
     });
 
+// ---- Seguimiento cada 5s con setTimeout (no setInterval)
+const makeKnownLinksSet = (posts) => new Set(posts.map((p) => p.link));
+
+const mergeNewPosts = (watched, feedId, items) => {
+  const known = makeKnownLinksSet(watched.posts);
+  const fresh = items
+    .filter((it) => it.link && !known.has(it.link))
+    .map((it) => ({ id: uid(), feedId, title: it.title, link: it.link, description: it.description }));
+  if (fresh.length) watched.posts = [...fresh, ...watched.posts];
+};
+
+const refreshOneFeed = (feed) =>
+  loadFeedXml(feed.url)
+    .then((xml) => parseRss(xml))
+    .then(({ items }) => ({ feedId: feed.id, items }));
+
+const refreshAllFeeds = (watched) => {
+  const feeds = watched.feeds;
+  if (!feeds.length) return Promise.resolve();
+  return Promise.allSettled(feeds.map(refreshOneFeed))
+    .then((results) => {
+      results.forEach((res) => {
+        if (res.status === 'fulfilled') {
+          const { feedId, items } = res.value;
+          mergeNewPosts(watched, feedId, items);
+        }
+      });
+    });
+};
+
+const scheduleUpdates = (watched, delayMs = 5000) => {
+  const tick = () => {
+    refreshAllFeeds(watched)
+      .catch(() => null)
+      .finally(() => setTimeout(tick, delayMs));
+  };
+  setTimeout(tick, delayMs);
+};
+
+// ---- Arranque
 initI18n('es').then(() => {
   const watched = initView(state, elements, i18n);
   elements.input.focus();
+
+  // Inicia el seguimiento periódico
+  scheduleUpdates(watched, 5000);
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();

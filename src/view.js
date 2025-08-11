@@ -22,14 +22,14 @@ const renderValidation = (els, errorCode, i18n) => {
   }
 };
 
-const renderFeeds = (els, feeds) => {
+const renderFeeds = (els, feeds, i18n) => {
   const container = els.feedsContainer;
   container.innerHTML = '';
   if (!feeds.length) return;
 
   const title = document.createElement('h2');
   title.className = 'h5 mb-3';
-  title.textContent = 'Feeds';
+  title.textContent = i18n.t('ui.feedsTitle');
 
   const list = document.createElement('ul');
   list.className = 'list-group';
@@ -54,12 +54,12 @@ const renderFeeds = (els, feeds) => {
   container.appendChild(list);
 };
 
-const renderPosts = (els, posts) => {
-  const containerId = 'posts-container';
-  let wrapper = document.getElementById(containerId);
+const renderPosts = (els, posts, i18n) => {
+  const id = 'posts-container';
+  let wrapper = document.getElementById(id);
   if (!wrapper) {
     wrapper = document.createElement('div');
-    wrapper.id = containerId;
+    wrapper.id = id;
     els.feedsContainer.after(wrapper);
   }
 
@@ -68,7 +68,7 @@ const renderPosts = (els, posts) => {
 
   const title = document.createElement('h2');
   title.className = 'h5 mb-3';
-  title.textContent = 'Posts';
+  title.textContent = i18n.t('ui.postsTitle');
 
   const list = document.createElement('ul');
   list.className = 'list-group';
@@ -95,6 +95,6 @@ export default (state, elements, i18n) =>
   onChange(state, (path, value) => {
     if (path === 'form.processState') setFormDisabled(elements, value !== 'idle');
     if (path === 'form.errorCode') renderValidation(elements, value, i18n);
-    if (path === 'feeds') renderFeeds(elements, value);
-    if (path === 'posts') renderPosts(elements, value);
+    if (path === 'feeds') renderFeeds(elements, value, i18n);
+    if (path === 'posts') renderPosts(elements, value, i18n);
   });
