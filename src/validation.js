@@ -1,21 +1,29 @@
 import * as yup from 'yup';
 
-// Construye el esquema en función de los feeds ya existentes.
-// Composición: recibe dependencias (urls actuales) -> devuelve esquema.
+// Hacemos que yup emita códigos de error (que luego traducimos con i18next)
+yup.setLocale({
+  mixed: {
+    required: 'errors.required',
+    notOneOf: 'errors.duplicate',
+  },
+  string: {
+    url: 'errors.url',
+  },
+});
+
+// esquema a partir de URLs existentes
 export const makeUrlSchema = (existingUrls) => {
-  // normalizamos para comparar sin sesgos de espacios
   const normalized = existingUrls.map((u) => u.trim());
   return yup
     .string()
     .trim()
-    .required('La URL es obligatoria')
-    .url('La URL no es válida')
-    .notOneOf(normalized, 'El feed ya fue agregado');
+    .required()
+    .url()
+    .notOneOf(normalized);
 };
 
-// Valida y retorna una promesa (sin async/await)
+// Valida y devuelve una Promesa que, en caso de error, tendrá .errors con códigos
 export const validateUrl = (url, existingUrls) => {
   const schema = makeUrlSchema(existingUrls);
-  // validate() devuelve una Promesa; abortEarly:false si luego quieres acumular mensajes
   return schema.validate(url, { abortEarly: false });
 };

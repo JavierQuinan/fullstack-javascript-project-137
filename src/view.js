@@ -1,35 +1,35 @@
 import onChange from 'on-change';
 
-// Render helpers (solo View)
-const setFeedback = (elements, text, type) => {
-  const { feedback } = elements;
+const setFeedback = (els, text, className) => {
+  const { feedback } = els;
   feedback.textContent = text || '';
   feedback.classList.remove('text-danger', 'text-success');
-  if (type) feedback.classList.add(type); // 'text-danger' | 'text-success'
+  if (className) feedback.classList.add(className);
 };
 
-const toggleForm = (elements, disabled) => {
-  const { input, submit } = elements;
-  input.disabled = disabled;
-  submit.disabled = disabled;
+const setFormDisabled = (els, disabled) => {
+  els.input.disabled = disabled;
+  els.submit.disabled = disabled;
 };
 
-const renderValidation = (elements, error) => {
-  const { input } = elements;
-  if (error) {
-    input.classList.add('is-invalid');
-    setFeedback(elements, error, 'text-danger');
+const renderValidation = (els, errorCode, i18n) => {
+  if (errorCode) {
+    els.input.classList.add('is-invalid');
+    setFeedback(els, i18n.t(errorCode), 'text-danger');
   } else {
-    input.classList.remove('is-invalid');
-    setFeedback(elements, 'RSS agregado correctamente', 'text-success');
+    els.input.classList.remove('is-invalid');
+    setFeedback(els, i18n.t('success.added'), 'text-success');
   }
 };
 
-const renderFeeds = (elements, feeds) => {
-  const { feedsContainer } = elements;
-  // Simple placeholder (en esta etapa basta con listar URLs)
-  feedsContainer.innerHTML = '';
-  if (feeds.length === 0) return;
+const renderFeeds = (els, feeds, i18n) => {
+  const container = els.feedsContainer;
+  container.innerHTML = '';
+  if (!feeds.length) return;
+
+  const title = document.createElement('h2');
+  title.className = 'h5 mb-3';
+  title.textContent = i18n.t('ui.feedsTitle');
 
   const ul = document.createElement('ul');
   ul.className = 'list-group';
@@ -39,28 +39,14 @@ const renderFeeds = (elements, feeds) => {
     li.textContent = f.url;
     ul.appendChild(li);
   });
-  feedsContainer.appendChild(ul);
+
+  container.appendChild(title);
+  container.appendChild(ul);
 };
 
-export default (state, elements) => onChange(state, (path, value) => {
-  switch (path) {
-    case 'form.processState': {
-      // 'idle' | 'validating' | 'sending' (por si luego haces request real)
-      toggleForm(elements, value !== 'idle');
-      break;
-    }
-
-    case 'form.error': {
-      renderValidation(elements, value);
-      break;
-    }
-
-    case 'feeds': {
-      renderFeeds(elements, value);
-      break;
-    }
-
-    default:
-      break;
-  }
-});
+export default (state, elements, i18n) =>
+  onChange(state, (path, value) => {
+    if (path === 'form.processState') setFormDisabled(elements, value !== 'idle');
+    if (path === 'form.errorCode') renderValidation(elements, value, i18n);
+    if (path === 'feeds') renderFeeds(elements, value, i18n);
+  });

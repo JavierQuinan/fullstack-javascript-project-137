@@ -4,65 +4,56 @@ import './styles.scss';
 
 import initView from './view.js';
 import { validateUrl } from './validation.js';
+import i18n, { initI18n } from './i18n.js';
 
-const buildElements = () => ({
-  form: document.getElementById('rss-form'),
-  input: document.getElementById('rss-url'),
-  submit: document.querySelector('#rss-form button[type="submit"]'),
-  feedback: document.getElementById('feedback'),
-  feedsContainer: document.getElementById('feeds'),
-});
+const qs = (sel) => document.querySelector(sel);
+const elements = {
+  form: qs('#rss-form'),
+  input: qs('#rss-url'),
+  submit: qs('#rss-form button[type="submit"]'),
+  feedback: qs('#feedback'),
+  feedsContainer: qs('#feeds'),
+};
 
-const initialState = {
-  feeds: [],                 // [{ url }]
+const state = {
+  feeds: [], // [{ url }]
   form: {
-    processState: 'idle',    // 'idle' | 'validating'
-    error: null,             // string | null
+    processState: 'idle', // 'idle' | 'validating'
+    errorCode: null,      // string (código i18n) | null
   },
 };
 
-// Helpers de “pipeline”
-const getExistingUrls = (state) => state.feeds.map((f) => f.url);
+const getExistingUrls = (st) => st.feeds.map((f) => f.url);
 const toFeed = (url) => ({ url });
 
-const run = () => {
-  const elements = buildElements();
-  const state = JSON.parse(JSON.stringify(initialState));
-  const watched = initView(state, elements);
+// Inicializamos i18next con Promesa y luego montamos la app
+initI18n('es')
+  .then(() => {
+    const watched = initView(state, elements, i18n);
+    elements.input.focus();
 
-  // foco inicial
-  elements.input.focus();
+    elements.form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const url = elements.input.value.trim();
 
-  elements.form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const url = elements.input.value.trim();
+      watched.form.errorCode = null;
+      watched.form.processState = 'validating';
 
-    // limpiamos feedback previo y marcamos estado
-    watched.form.error = null;
-    watched.form.processState = 'validating';
+      validateUrl(url, getExistingUrls(watched))
+        .then(() => {
+          watched.feeds = [toFeed(url), ...watched.feeds];
 
-    // VALIDACIÓN (Promesas, sin async/await)
-    validateUrl(url, getExistingUrls(watched))
-      .then(() => {
-        // éxito: agregamos feed
-        watched.feeds = [toFeed(url)].concat(watched.feeds);
+          elements.form.reset();
+          elements.input.focus();
 
-        // reset visual del formulario
-        elements.form.reset();
-        elements.input.focus();
-
-        // al no haber error, view muestra success
-        watched.form.error = null;
-      })
-      .catch((err) => {
-        // Yup puede devolver múltiples errores; tomamos el primero legible
-        const message = err.errors && err.errors.length ? err.errors[0] : err.message;
-        watched.form.error = message || 'Error de validación';
-      })
-      .finally(() => {
-        watched.form.processState = 'idle';
-      });
+          watched.form.errorCode = null; // dispara mensaje de éxito traducido
+        })
+        .catch((err) => {
+          const key = err.errors?.[0] || 'errors.parse';
+          watched.form.errorCode = key;  // guardamos CÓDIGO, no texto
+        })
+        .finally(() => {
+          watched.form.processState = 'idle';
+        });
+    });
   });
-};
-
-run();
