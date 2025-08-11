@@ -1,5 +1,5 @@
 import onChange from 'on-change';
-import Modal from 'bootstrap/js/dist/modal';
+import { Modal } from 'bootstrap';
 
 // ---------- helpers UI ----------
 const setFeedback = (els, text, className) => {
