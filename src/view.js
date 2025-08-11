@@ -48,6 +48,11 @@ const ensurePreviewModal = () => {
     modal.id = 'previewModal';
     modal.tabIndex = -1;
     modal.setAttribute('aria-hidden', 'true');
+
+    // ⬇️  Añadir estas dos líneas:
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-labelledby', 'previewModalLabel');
+
     modal.innerHTML = `
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
