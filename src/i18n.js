@@ -3,46 +3,24 @@ import i18next from 'i18next';
 const resources = {
   es: {
     translation: {
-      success: {
-        added: 'RSS agregado correctamente',
-      },
+      success: { added: 'RSS cargado con éxito' },
       errors: {
-        required: 'La URL es obligatoria',
-        url: 'La URL no es válida',
-        duplicate: 'El feed ya fue agregado',
+        required: 'No debe estar vacío',
+        url: 'El enlace debe ser una URL válida',
+        duplicate: 'El RSS ya existe',
+        parse: 'El recurso no contiene un RSS válido',
         network: 'Error de red',
-        parse: 'RSS inválido',
       },
       ui: {
         feedsTitle: 'Feeds',
         postsTitle: 'Posts',
-      },
-    },
-  },
-  en: {
-    translation: {
-      success: { added: 'RSS added successfully' },
-      errors: {
-        required: 'URL is required',
-        url: 'URL is invalid',
-        duplicate: 'Feed already added',
-        network: 'Network error',
-        parse: 'Invalid RSS',
-      },
-      ui: {
-        feedsTitle: 'Feeds',
-        postsTitle: 'Posts',
+        preview: 'Vista previa',
       },
     },
   },
 };
 
 export const initI18n = (lng = 'es') =>
-  i18next.init({
-    lng,
-    fallbackLng: 'es',
-    resources,
-    interpolation: { escapeValue: false },
-  });
+  i18next.init({ lng, fallbackLng: 'es', resources, interpolation: { escapeValue: false } });
 
 export default i18next;
