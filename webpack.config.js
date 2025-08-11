@@ -11,6 +11,7 @@ export default {
     filename: 'bundle.[contenthash].js',
     clean: true,
   },
+  devtool: 'source-map',
   devServer: {
     static: './dist',
     port: 8080,
@@ -18,12 +19,31 @@ export default {
   },
   module: {
     rules: [
-      { test: /\.s?css$/i, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'] },
-      { test: /\.(png|jpe?g|gif|svg|ico)$/i, type: 'asset/resource' }
+      {
+        test: /\.s?css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: { sassOptions: { quietDeps: true } }, // silencia warnings de dependencias (Bootstrap)
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|ico)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './_index.html', filename: 'index.html' }),
-    new MiniCssExtractPlugin({ filename: 'styles.[contenthash].css' }),
+    new HtmlWebpackPlugin({
+      template: './_index.html',
+      filename: 'index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.[contenthash].css',
+    }),
   ],
 };
