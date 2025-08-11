@@ -1,5 +1,7 @@
 import onChange from 'on-change';
+import Modal from 'bootstrap/js/dist/modal';
 
+// ---------- helpers UI ----------
 const setFeedback = (els, text, className) => {
   const { feedback } = els;
   feedback.textContent = text || '';
@@ -22,6 +24,45 @@ const renderValidation = (els, errorCode, i18n) => {
   }
 };
 
+const ensurePostsWrapper = (els) => {
+  const id = 'posts-container';
+  let wrapper = document.getElementById(id);
+  if (!wrapper) {
+    wrapper = document.createElement('div');
+    wrapper.id = id;
+    els.feedsContainer.after(wrapper);
+  }
+  return wrapper;
+};
+
+const ensurePreviewModal = () => {
+  let modal = document.getElementById('previewModal');
+  if (modal) return modal;
+
+  modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.id = 'previewModal';
+  modal.tabIndex = -1;
+  modal.setAttribute('aria-hidden', 'true');
+  modal.innerHTML = `
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="previewModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body" id="previewModalBody"></div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" id="previewReadFull" target="_blank" rel="noopener noreferrer">Leer completo</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  return modal;
+};
+
+// ---------- renders ----------
 const renderFeeds = (els, feeds, i18n) => {
   const container = els.feedsContainer;
   container.innerHTML = '';
@@ -54,14 +95,9 @@ const renderFeeds = (els, feeds, i18n) => {
   container.appendChild(list);
 };
 
-const renderPosts = (els, posts, i18n) => {
-  const id = 'posts-container';
-  let wrapper = document.getElementById(id);
-  if (!wrapper) {
-    wrapper = document.createElement('div');
-    wrapper.id = id;
-    els.feedsContainer.after(wrapper);
-  }
+const renderPosts = (els, state, i18n) => {
+  const wrapper = ensurePostsWrapper(els);
+  const { posts, viewedPostIds } = state;
 
   wrapper.innerHTML = '';
   if (!posts.length) return;
@@ -74,16 +110,27 @@ const renderPosts = (els, posts, i18n) => {
   list.className = 'list-group';
 
   posts.forEach((p) => {
+    const isRead = viewedPostIds.includes(p.id);
+
     const li = document.createElement('li');
-    li.className = 'list-group-item d-flex justify-content-between align-items-start';
+    li.className = 'list-group-item d-flex justify-content-between align-items-start gap-2';
 
     const a = document.createElement('a');
     a.href = p.link;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
+    a.dataset.id = p.id; // para marcar leído al hacer click
+    a.className = isRead ? 'fw-normal' : 'fw-bold';
     a.textContent = p.title;
 
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-outline-primary btn-sm';
+    btn.dataset.id = p.id;
+    btn.textContent = 'Vista previa';
+
     li.appendChild(a);
+    li.appendChild(btn);
     list.appendChild(li);
   });
 
@@ -91,10 +138,57 @@ const renderPosts = (els, posts, i18n) => {
   wrapper.appendChild(list);
 };
 
-export default (state, elements, i18n) =>
-  onChange(state, (path, value) => {
-    if (path === 'form.processState') setFormDisabled(elements, value !== 'idle');
-    if (path === 'form.errorCode') renderValidation(elements, value, i18n);
-    if (path === 'feeds') renderFeeds(elements, value, i18n);
-    if (path === 'posts') renderPosts(elements, value, i18n);
+// ---------- eventos delegados para posts (preview y marcar leído) ----------
+const attachPostsEventsOnce = (els, state, actions) => {
+  const wrapper = ensurePostsWrapper(els);
+  if (wrapper._eventsAttached) return;
+  wrapper._eventsAttached = true;
+
+  // Click en enlaces: marcar leído
+  wrapper.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-id]');
+    if (a) {
+      actions(state).markPostRead(a.dataset.id);
+      return;
+    }
+    const btn = e.target.closest('button[data-id]');
+    if (btn) {
+      const id = btn.dataset.id;
+      const post = actions(state).getPostById(id);
+      if (!post) return;
+
+      // marcar leído
+      actions(state).markPostRead(id);
+
+      // abrir modal
+      const modalEl = ensurePreviewModal();
+      const modalTitle = modalEl.querySelector('#previewModalLabel');
+      const modalBody = modalEl.querySelector('#previewModalBody');
+      const readFull = modalEl.querySelector('#previewReadFull');
+
+      modalTitle.textContent = post.title;
+      modalBody.textContent = post.description || '';
+      readFull.href = post.link;
+
+      const instance = Modal.getOrCreateInstance(modalEl);
+      instance.show();
+    }
   });
+};
+
+// ---------- init ----------
+export default (state, elements, i18n, actionsFactory) => {
+  // engancha watchers
+  const watched = onChange(state, (path) => {
+    if (path === 'form.processState') setFormDisabled(elements, state.form.processState !== 'idle');
+    if (path === 'form.errorCode') renderValidation(elements, state.form.errorCode, i18n);
+    if (path === 'feeds') renderFeeds(elements, state.feeds, i18n);
+    if (path === 'posts' || path === 'viewedPostIds') renderPosts(elements, state, i18n);
+  });
+
+  // una sola vez: preparar wrapper y eventos
+  ensurePostsWrapper(elements);
+  attachPostsEventsOnce(elements, watched, actionsFactory);
+
+  return watched;
+};

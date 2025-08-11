@@ -22,6 +22,7 @@ const uid = () => (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${D
 const state = {
   feeds: [], // [{ id, url, title, description }]
   posts: [], // [{ id, feedId, title, link, description }]
+  viewedPostIds: [], // ← IDs de posts leídos
   form: {
     processState: 'idle', // 'idle' | 'validating' | 'sending'
     errorCode: null,      // string | null (código i18n)
@@ -92,9 +93,19 @@ const scheduleUpdates = (watched, delayMs = 5000) => {
   setTimeout(tick, delayMs);
 };
 
+// ==== API que pasa la View para manejar leído/preview ====
+const actionsFactory = (watched) => ({
+  getPostById: (id) => watched.posts.find((p) => p.id === id),
+  markPostRead: (id) => {
+    if (!watched.viewedPostIds.includes(id)) {
+      watched.viewedPostIds = [...watched.viewedPostIds, id]; // reassign para on-change
+    }
+  },
+});
+
 // ---- Arranque
 initI18n('es').then(() => {
-  const watched = initView(state, elements, i18n);
+  const watched = initView(state, elements, i18n, actionsFactory);
   elements.input.focus();
 
   // Inicia el seguimiento periódico
