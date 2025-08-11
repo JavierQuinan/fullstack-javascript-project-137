@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 const resources = {
   es: {
@@ -18,9 +19,36 @@ const resources = {
       },
     },
   },
+  en: {
+    translation: {
+      success: { added: 'RSS has been loaded' },
+      errors: {
+        required: 'Must not be empty',
+        url: 'The link must be a valid URL',
+        duplicate: 'RSS already exists',
+        parse: 'The resource does not contain a valid RSS',
+        network: 'Network error',
+      },
+      ui: {
+        feedsTitle: 'Feeds',
+        postsTitle: 'Posts',
+        preview: 'Preview',
+      },
+    },
+  },
 };
 
-export const initI18n = (lng = 'es') =>
-  i18next.init({ lng, fallbackLng: 'es', resources, interpolation: { escapeValue: false } });
+export const initI18n = () =>
+  i18next
+    .use(LanguageDetector)
+    .init({
+      resources,
+      fallbackLng: 'es',
+      detection: {
+        // El runner de Playwright aporta navigator/headers -> priorízalos
+        order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+      },
+      interpolation: { escapeValue: false },
+    });
 
 export default i18next;
