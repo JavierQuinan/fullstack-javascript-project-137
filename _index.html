@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Agregador de RSS</title>
+  </head>
+  <body>
+    <div class="container py-5">
+      <h1 class="mb-4">Agregador de RSS</h1>
+
+      <form id="rss-form" class="row gy-2 gx-3 align-items-center" novalidate>
+        <div class="col-sm-8">
+          <label for="rss-url" class="form-label visually-hidden"
+            >URL RSS</label
+          >
+          <input
+            id="rss-url"
+            name="url"
+            type="text"
+            class="form-control"
+            placeholder="https://ejemplo.com/feed.rss"
+            required
+          />
+          <!-- Bootstrap usa '.is-invalid' en el input y pinta rojo -->
+        </div>
+        <div class="col-sm-4 d-grid">
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </div>
+      </form>
+
+      <div id="feedback" class="form-text mt-2"></div>
+      <hr class="my-4" />
+      <div id="feeds"></div>
+    </div>
+  </body>
+</html>
