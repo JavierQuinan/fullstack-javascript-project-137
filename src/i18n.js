@@ -43,13 +43,14 @@ export const initI18n = () =>
     .use(LanguageDetector)
     .init({
       resources,
+      // Por requerimiento del proyecto, ES por defecto.
       fallbackLng: 'es',
       supportedLngs: ['en', 'es'],
       nonExplicitSupportedLngs: true, // en-US -> en
       detection: {
-        // Prioriza lo que define el navegador del runner
-        order: ['navigator', 'htmlTag', 'querystring', 'cookie', 'localStorage'],
-        caches: [], // sin cache para que no “pegue” un idioma previo
+        // Prioriza señales del navegador/runner; sin caché para evitar “pegarse”
+        order: ['querystring', 'cookie', 'navigator', 'htmlTag', 'localStorage'],
+        caches: [],
       },
       interpolation: { escapeValue: false },
     });

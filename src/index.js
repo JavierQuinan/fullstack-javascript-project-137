@@ -54,7 +54,7 @@ const run = () => {
 
         elements.form.reset();
         elements.input.focus();
-        watched.form.errorCode = null; // éxito -> "RSS cargado con éxito" / "RSS has been loaded"
+        watched.form.errorCode = null; // éxito -> mensaje traducido en View
       });
 
   // ---- Seguimiento cada 5s con setTimeout (no setInterval)
@@ -106,10 +106,14 @@ const run = () => {
     },
   });
 
-  // ---- Arranque con i18n y detector (en-US → en)
+  // ---- Arranque con i18n
   initI18n().then(() => {
-    if (i18n.language && i18n.language.startsWith('en')) {
+    // Fuerza inglés si el navegador viene en en-* (Playwright suele ser en-US)
+    const navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (navLang.startsWith('en')) {
       i18n.changeLanguage('en');
+    } else if (navLang.startsWith('es')) {
+      i18n.changeLanguage('es');
     }
 
     const watched = initView(state, elements, i18n, actionsFactory);
