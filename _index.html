@@ -11,15 +11,14 @@
 
       <form id="rss-form" class="row gy-2 gx-3 align-items-center" novalidate>
         <div class="col-sm-8">
-          <label for="rss-url" class="form-label visually-hidden"
-            >URL RSS</label
-          >
+          <label for="rss-url" class="form-label visually-hidden">URL RSS</label>
           <input
             id="rss-url"
             name="url"
             type="text"
             class="form-control"
             placeholder="https://ejemplo.com/feed.rss"
+            aria-label="url"
             required
           />
           <!-- Bootstrap usa '.is-invalid' en el input y pinta rojo -->
@@ -29,7 +28,8 @@
         </div>
       </form>
 
-      <div id="feedback" class="form-text mt-2"></div>
+      <div id="feedback" class="form-text mt-2" role="status" aria-live="polite"></div>
+
       <hr class="my-4" />
       <div id="feeds"></div>
     </div>
