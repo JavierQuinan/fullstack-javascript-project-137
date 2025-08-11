@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "echo \"No tests\""
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
