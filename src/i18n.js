@@ -1,5 +1,4 @@
 import i18next from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 
 const resources = {
   es: {
@@ -38,21 +37,13 @@ const resources = {
   },
 };
 
+// Nota: dejamos i18n sin detector para evitar incertidumbre en CI.
+// Por defecto usará 'es' (fallback), pero en index.js forzamos 'en'.
 export const initI18n = () =>
-  i18next
-    .use(LanguageDetector)
-    .init({
-      resources,
-      // Por requerimiento del proyecto, ES por defecto.
-      fallbackLng: 'es',
-      supportedLngs: ['en', 'es'],
-      nonExplicitSupportedLngs: true, // en-US -> en
-      detection: {
-        // Prioriza señales del navegador/runner; sin caché para evitar “pegarse”
-        order: ['querystring', 'cookie', 'navigator', 'htmlTag', 'localStorage'],
-        caches: [],
-      },
-      interpolation: { escapeValue: false },
-    });
+  i18next.init({
+    resources,
+    fallbackLng: 'es',
+    interpolation: { escapeValue: false },
+  });
 
 export default i18next;

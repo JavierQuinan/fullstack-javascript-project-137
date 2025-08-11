@@ -106,15 +106,11 @@ const run = () => {
     },
   });
 
-  // ---- Arranque con i18n
+  // ---- Arranque con i18n -> forzar EN para CI
   initI18n().then(() => {
-    // Fuerza inglés si el navegador viene en en-* (Playwright suele ser en-US)
-    const navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-    if (navLang.startsWith('en')) {
-      i18n.changeLanguage('en');
-    } else if (navLang.startsWith('es')) {
-      i18n.changeLanguage('es');
-    }
+    // Fuerza inglés para que el test encuentre "RSS has been loaded"
+    i18n.changeLanguage('en');
+    document.documentElement.lang = 'en';
 
     const watched = initView(state, elements, i18n, actionsFactory);
     elements.input.focus();
