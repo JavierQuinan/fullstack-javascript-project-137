@@ -4,10 +4,3 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/33c8e2fdc5700e92fd24/maintainability)](https://codeclimate.com/github/iPoolito/frontend-project-137/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/33c8e2fdc5700e92fd24/test_coverage)](https://codeclimate.com/github/iPoolito/frontend-project-137/test_coverage)
 
-### Deploy link
-
-https://frontend-project-137.vercel.app/
-
-## Example link
-
-https://lorem-rss.hexlet.app/feed
