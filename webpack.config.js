@@ -1,49 +1,36 @@
-import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const __dirname = path.resolve();
+const mode = process.env.NODE_ENV || 'development';
 
 export default {
-  entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
-    clean: true,
-  },
-  devtool: 'source-map',
+  mode,
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Development',
+      template: 'index.html',
+    }),
+  ],
   devServer: {
-    static: './dist',
+    host: '0.0.0.0',
     port: 8080,
-    open: false,
   },
   module: {
     rules: [
+      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
       {
-        test: /\.s?css$/i,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: { sassOptions: { quietDeps: true } }, // silencia warnings de dependencias (Bootstrap)
-          },
-        ],
+        test: /\.scss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|ico)$/i,
-        type: 'asset/resource',
+        test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'url-loader?limit=10000',
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
+        use: 'file-loader',
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './_index.html',
-      filename: 'index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'styles.[contenthash].css',
-    }),
-  ],
 };

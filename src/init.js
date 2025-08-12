@@ -173,9 +173,11 @@ export default () => {
       // The state is passed as a function parameter along with the i18next instance
       const watchedState = watch(elements, initState, i18nextInstance);
 
+      // @ts-ignore
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
         // Getting form data via FormData
+        // @ts-ignore
         const data = new FormData(e.target);
         const url = data.get('url');
 
@@ -197,11 +199,14 @@ export default () => {
         });
       });
 
+      // @ts-ignore
       elements.postsBox.addEventListener('click', (evt) => {
+        // @ts-ignore
         if (!('id' in evt.target.dataset)) {
           return;
         }
 
+        // @ts-ignore
         const { id } = evt.target.dataset;
         watchedState.modal.postId = String(id);
         watchedState.ui.seenPosts.add(id);

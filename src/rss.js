@@ -12,24 +12,31 @@ export default (data) => {
     const error = new Error(parseError.textContent);
     // the parsing error is flagged similarly to an axios error
     // to easier distinct it in the handler
+    // @ts-ignore
     error.isParsingError = true;
     // Useful for debugging
+    // @ts-ignore
     error.data = data;
     throw error;
   }
 
   const channelTitleElement = dom.querySelector('channel > title');
+  // @ts-ignore
   const channelTitle = channelTitleElement.textContent;
   const channelDescriptionElement = dom.querySelector('channel > description');
+  // @ts-ignore
   const channelDescription = channelDescriptionElement.textContent;
 
   const itemElements = dom.querySelectorAll('item');
   const items = [...itemElements].map((el) => {
     const titleElement = el.querySelector('title');
+    // @ts-ignore
     const title = titleElement.textContent;
     const linkElement = el.querySelector('link');
+    // @ts-ignore
     const link = linkElement.textContent;
     const descriptionElement = el.querySelector('description');
+    // @ts-ignore
     const description = descriptionElement.textContent;
     return { title, link, description };
   });
