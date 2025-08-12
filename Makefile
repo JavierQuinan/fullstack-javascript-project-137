@@ -1,17 +1,19 @@
 install:
-	npm ci
+	npm install
 
-# Dev server (webpack-dev-server). El runner no abre navegador.
 start:
-	npm run start
+	npx webpack serve
 
 build:
 	npm run build
 
-# Linter
+test:
+	npm test -s
+
+test-coverage:
+	npm test -- --coverage
+
 lint:
 	npx eslint .
-
-# Punto de entrada para pruebas (si el runner lo invoca)
-test:
-	npm test
+lint-fix:
+	npx eslint . --fix
