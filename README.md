@@ -4,7 +4,7 @@
 ### Maintainability
 [![Maintainability](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137/maintainability.svg)](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137)
 
-### Coveerage
+### Coverage
 [![Code Coverage](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137/coverage.svg)](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137)
 
 ## Deploy link
