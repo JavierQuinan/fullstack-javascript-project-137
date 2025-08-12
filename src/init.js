@@ -1,9 +1,4 @@
 // @ts-check
-
-// In this module we don't have initializing code outside functions
-// Only in this case it can be imported into tests and tested (and reinitialized)
-// https://hexlet.io/courses/js-frontend-architecture/lessons/initialization/theory_unit
-
 import 'bootstrap';
 import * as yup from 'yup';
 import axios from 'axios';
@@ -120,7 +115,8 @@ export default () => {
     postsBox: document.querySelector('.posts'),
     modal: document.querySelector('#modal'),
   };
-
+  
+ if (elements.input) elements.input.setAttribute('aria-label', 'url');
   // Two processess, two states
   // Posts are normalized
   // A state must always have a meaningful name, no empty string or null

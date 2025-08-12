@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Agregador de RSS</title>
+    <title>RSS Aggregator</title>
   </head>
   <body>
     <div class="container py-5">
@@ -17,19 +17,17 @@
             name="url"
             type="text"
             class="form-control"
-            placeholder="https://ejemplo.com/feed.rss"
+            placeholder="https://example.com/feed.rss"
             aria-label="url"
             required
           />
-          <!-- Bootstrap usa '.is-invalid' en el input y pinta rojo -->
         </div>
         <div class="col-sm-4 d-grid">
-          <button type="submit" class="btn btn-primary">Agregar</button>
+          <button type="submit" class="btn btn-primary">Add</button>
         </div>
       </form>
 
       <div id="feedback" class="form-text mt-2" role="status" aria-live="polite"></div>
-
       <hr class="my-4" />
       <div id="feeds"></div>
     </div>
