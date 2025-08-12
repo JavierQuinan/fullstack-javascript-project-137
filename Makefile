@@ -1,10 +1,3 @@
-# Makefile (raíz del repo)
-.PHONY: setup install start build lint test
-
-# Usado por el runner de Hexlet en el paso "setup"
-setup: install
-
-# Instala dependencias en la raíz del proyecto
 install:
 	npm ci
 
@@ -12,7 +5,6 @@ install:
 start:
 	npm run start
 
-# Build de producción (dist/)
 build:
 	npm run build
 
