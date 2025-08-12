@@ -7,7 +7,9 @@
   "scripts": {
     "start": "webpack serve",
     "build": "NODE_ENV=production webpack --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "npx playwright test && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,7 @@
     "@babel/core": "^7.25.2",
     "@babel/eslint-parser": "^7.25.1",
     "@babel/preset-env": "^7.25.3",
+    "@playwright/test": "^1.54.2",
     "autoprefixer": "^10.4.20",
     "babel-jest": "^29.7.0",
     "css-loader": "^7.1.2",

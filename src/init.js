@@ -115,8 +115,8 @@ export default () => {
     postsBox: document.querySelector('.posts'),
     modal: document.querySelector('#modal'),
   };
-  
- if (elements.input) elements.input.setAttribute('aria-label', 'url');
+
+  if (elements.input) elements.input.setAttribute('aria-label', 'url');
   // Two processess, two states
   // Posts are normalized
   // A state must always have a meaningful name, no empty string or null
