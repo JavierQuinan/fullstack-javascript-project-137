@@ -1,40 +1,51 @@
+<div align="center">
+
 # 📰 RSS Aggregator
 
-> **¡Hola! Soy Francisco Quinteros "Quinan_Dev"**
-> 
-> Desarrollador Full Stack apasionado por crear soluciones web modernas y eficientes
+### > Hola! Soy **Francisco Quinteros** - "Quinan_Dev"
 
 [![Actions Status](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions)
 [![Maintainability](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137/maintainability.svg)](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137)
 [![Code Coverage](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137/coverage.svg)](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137)
 
-## 🚀 Demo en Vivo
+### 🚀 [VER DEMO EN VIVO](https://fullstack-javascript-project-137-nine.vercel.app/)
 
-**[Ver Aplicación →](https://fullstack-javascript-project-137-nine.vercel.app/)**
-
----
-
-## 📖 ¿Qué es este proyecto?
-
-RSS Aggregator es una aplicación web moderna que te permite **agregar y leer feeds RSS de forma centralizada**. Con esta herramienta puedes:
-
-- ✅ Suscribirte a múltiples fuentes RSS
-- ✅ Ver todos tus contenidos en un solo lugar
-- ✅ Mantenerte actualizado con las últimas publicaciones
-- ✅ Validación inteligente de URLs
-- ✅ Actualización automática de contenidos
-- ✅ Interfaz intuitiva y responsiva
-
-Ideal para personas que siguen blogs, noticias y sitios web que ofrecen feeds RSS y quieren tener toda la información organizada en un solo sitio.
+</div>
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 💡 Sobre el Proyecto
 
-Este proyecto fue construido con las siguientes tecnologías modernas:
+**RSS Aggregator** es una aplicación web moderna y elegante que centraliza la lectura de feeds RSS. Diseñada para mantener toda tu información organizada en un solo lugar, esta herramienta es perfecta para estar al día con tus blogs, noticias y sitios web favoritos.
 
-| Tecnología | Uso |
-|-----------|-----|
+### ✨ Características Principales
+
+- 🔗 **Agregación Inteligente** - Suscríbete a múltiples fuentes RSS
+- 🔄 **Actualización Automática** - Contenido siempre actualizado
+- ✅ **Validación en Tiempo Real** - URLs validadas al instante
+- 📱 **Diseño Responsivo** - Funciona en todos los dispositivos
+- 🌐 **Multiidioma** - Soporte para internacionalización
+- ⚡ **Alto Rendimiento** - Optimizado para velocidad
+
+---
+
+## 🛠️ Stack Tecnológico
+
+<div align="center">
+
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Webpack](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=black)
+![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Sass](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
+
+</div>
+
+### 📦 Dependencias Clave
+
+| Tecnología | Propósito |
+|-----------|-----------|
 | **JavaScript** | Lenguaje de programación principal |
 | **Webpack** | Empaquetador de módulos |
 | **Bootstrap 5** | Framework CSS para diseño responsivo |
@@ -42,77 +53,70 @@ Este proyecto fue construido con las siguientes tecnologías modernas:
 | **Yup** | Validación de esquemas y formularios |
 | **i18next** | Internacionalización |
 | **On-change** | Observador de cambios de estado |
-| **ESLint** | Linter para mantener código limpio |
+| **ESLint** | Linter para código limpio |
 | **Playwright** | Testing automatizado |
 
 ---
 
-## 📦 Instalación y Uso
+## ⚙️ Instalación y Configuración
 
-### Requisitos Previos
-- Node.js (versión 14 o superior)
-- npm o yarn
+### 📋 Requisitos Previos
 
-### Pasos de Instalación
+- **Node.js** (v14 o superior)
+- **npm** o **yarn**
+
+### 🚀 Inicio Rápido
 
 ```bash
-# 1. Clonar el repositorio
+# Clonar el repositorio
 git clone https://github.com/JavierQuinan/fullstack-javascript-project-137.git
 
-# 2. Entrar al directorio del proyecto
+# Navegar al directorio
 cd fullstack-javascript-project-137
 
-# 3. Instalar dependencias
+# Instalar dependencias
 npm install
 
-# 4. Iniciar servidor de desarrollo
+# Iniciar servidor de desarrollo
 npm start
 ```
 
-La aplicación estará disponible en `http://localhost:8080`
+> 🌐 La aplicación estará disponible en **http://localhost:8080**
 
-### Otros Comandos
+### 📜 Scripts Disponibles
 
 ```bash
-# Construir para producción
-npm run build
-
-# Ejecutar linter
-npm run lint
-
-# Corregir errores de linting automáticamente
-npm run lint:fix
-
-# Ejecutar tests
-npm test
-
-# Previsualizar build de producción
-npm run preview
+npm start          # Inicia el servidor de desarrollo
+npm run build      # Crea el build de producción
+npm run lint       # Ejecuta el linter
+npm run lint:fix   # Corrige errores de linting automáticamente
+npm test           # Ejecuta los tests
+npm run preview    # Previsualiza el build de producción
 ```
 
 ---
 
-## 💡 Características Principales
+## 🎯 Cómo Usar
 
-### 🔄 Actualización Automática
-Los feeds se actualizan automáticamente cada cierto tiempo para mostrarte el contenido más reciente.
-
-### ✔️ Validación Robusta
-Validación en tiempo real de URLs RSS con mensajes de error claros y útiles.
-
-### 🌐 Soporte Multiidioma
-Aplicación preparada para múltiples idiomas usando i18next.
-
-### 📱 Diseño Responsivo
-Interfaz adaptable que funciona perfectamente en dispositivos móviles, tablets y escritorio.
+1. **Agrega un Feed RSS** - Ingresa la URL del feed en el campo de entrada
+2. **Valida Automáticamente** - El sistema verifica que sea un feed RSS válido
+3. **Visualiza Contenido** - Lee las publicaciones directamente en la aplicación
+4. **Actualización Continua** - Los feeds se actualizan automáticamente
 
 ---
 
 ## 👨‍💻 Desarrollador
 
-**Desarrollado por Francisco Quinteros "Quinan_Dev"**
+<div align="center">
 
-Si tienes preguntas, sugerencias o quieres contribuir al proyecto, ¡no dudes en contactarme!
+### **Francisco Quinteros** 
+#### *"Quinan_Dev"*
+
+*Desarrollador Full Stack apasionado por crear soluciones web modernas y eficientes*
+
+---
+
+</div>
 
 ---
 
@@ -123,15 +127,37 @@ ISC License - Consulta el archivo LICENSE para más detalles.
 ---
 
 ## 🤝 Contribuciones
+🤝 Contribuciones
 
-Las contribuciones son bienvenidas. Si encuentras algún bug o tienes ideas para mejorar el proyecto:
+Las contribuciones son **bienvenidas y apreciadas**. Si encuentras un bug o tienes ideas para mejorar:
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add: nueva característica'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. 🍴 **Fork** el proyecto
+2. 🔨 Crea una **rama** para tu feature
+   ```bash
+   git checkout -b feature/NuevaCaracteristica
+   ```
+3. 💾 **Commit** tus cambios
+   ```bash
+   git commit -m 'Add: descripción de la característica'
+   ```
+4. 📤 **Push** a la rama
+   ```bash
+   git push origin feature/NuevaCaracteristica
+   ```
+5. 🎉 Abre un **Pull Request**
 
 ---
 
-⭐ **Si te gusta este proyecto, no olvides darle una estrella en GitHub**
+## 📄 Licencia
+
+Este proyecto está bajo la licencia **ISC**. Consulta el archivo LICENSE para más detalles.
+
+---
+
+<div align="center">
+
+### ⭐ Si este proyecto te fue útil, considera darle una estrella
+
+**Hecho con ❤️ por Francisco Quinteros "Quinan_Dev"**
+
+</div>
