@@ -2,156 +2,132 @@
 
 # RSS Reader
 
-### Desarrollado por **Francisco Quinteros** - "Quinan_Dev"
+### Reactive RSS aggregator built with JavaScript, Webpack and i18next
 
 [![Actions Status](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions)
-[![Maintainability](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137/maintainability.svg)](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137)
-[![Code Coverage](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137/coverage.svg)](https://qlty.sh/gh/JavierQuinan/projects/fullstack-javascript-project-137)
+![JavaScript](https://img.shields.io/badge/JavaScript-ESM-F7DF1E?logo=javascript&logoColor=black)
+![Webpack](https://img.shields.io/badge/Webpack-5-8DD6F9?logo=webpack&logoColor=black)
+![License](https://img.shields.io/badge/license-ISC-blue)
 
-### [VER DEMO EN VIVO](https://fullstack-javascript-project-137-nine.vercel.app/)
-
-</div>
-
----
-
-## Sobre el Proyecto
-
-**RSS Reader** es una aplicación web moderna y elegante que centraliza la lectura de feeds RSS. Diseñada para mantener toda tu información organizada en un solo lugar, esta herramienta es perfecta para estar al día con tus blogs, noticias y sitios web favoritos.
-
-### Características Principales
-
-- **Agregación Inteligente** - Suscríbete a múltiples fuentes RSS
-- **Actualización Automática** - Contenido siempre actualizado
-- **Validación en Tiempo Real** - URLs validadas al instante
-- **Diseño Responsivo** - Funciona en todos los dispositivos
-- **Multiidioma** - Soporte para internacionalización
-- **Alto Rendimiento** - Optimizado para velocidad
-
----
-
-## Stack Tecnológico
-
-<div align="center">
-
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Webpack](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=black)
-![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![Sass](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
-![Yup](https://img.shields.io/badge/Yup-000000?style=for-the-badge&logo=yup&logoColor=white)
-![i18next](https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white)
-![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
-![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
-![Lodash](https://img.shields.io/badge/Lodash-3492FF?style=for-the-badge&logo=lodash&logoColor=white)
-![PostCSS](https://img.shields.io/badge/PostCSS-DD3A0A?style=for-the-badge&logo=postcss&logoColor=white)
-![Babel](https://img.shields.io/badge/Babel-F9DC3E?style=for-the-badge&logo=babel&logoColor=black)
+[Configured Vercel demo](https://fullstack-javascript-project-137-nine.vercel.app/)
 
 </div>
 
-Este proyecto utiliza tecnologías modernas de JavaScript para ofrecer una experiencia de desarrollo robusta y mantenible. Incluye validación de formularios con Yup, gestión de estado reactivo con On-change, internacionalización con i18next, y testing automatizado con Playwright.
+## Overview
 
----
+RSS Reader is a browser application for subscribing to RSS feeds, validating feed URLs, rendering posts and periodically checking subscribed feeds for new content.
 
-## Instalación y Configuración
+The project is maintained as **verifiable frontend engineering evidence**. It demonstrates reactive client state without a frontend framework, modular UI rendering, asynchronous network flows, RSS parsing and build tooling.
 
-### Requisitos Previos
+## Verified capabilities
 
-- **Node.js** (v14 o superior)
-- **npm** o **yarn**
+- RSS URL validation with Yup
+- duplicate-feed prevention
+- requests through Axios and the AllOrigins proxy used by the project
+- RSS/XML parsing into feed and post models
+- reactive application state through `on-change`
+- separated UI watchers/rendering
+- periodic feed refresh after the previous request cycle completes
+- detection and insertion of newly published posts
+- modal post preview / read-state handling
+- internationalization with i18next
+- Bootstrap UI
+- Webpack production build
+- ESLint / Airbnb configuration
+- Vercel deployment configuration
 
-### Inicio Rápido
+## Stack
+
+`JavaScript / ES Modules` · `Axios` · `Yup` · `i18next` · `on-change` · `Lodash` · `Bootstrap` · `Webpack` · `Babel` · `Sass` · `PostCSS` · `ESLint`
+
+## Application flow
+
+```text
+Feed URL
+   │
+   ▼
+Yup validation
+   │
+   ▼
+HTTP proxy request
+   │
+   ▼
+RSS parser
+   │
+   ▼
+Reactive state (feeds / posts / form / UI)
+   │
+   ▼
+watchers.js renders DOM updates
+   │
+   └── periodic refresh checks for new posts
+```
+
+The refresh loop waits for the active network cycle to finish before scheduling the next iteration, avoiding overlapping polling cycles.
+
+## Structure
+
+```text
+src/
+  index.js
+  init.js
+  rss.js
+  watchers.js
+  locales/
+webpack.config.js
+vercel.json
+package.json
+```
+
+## Local development
 
 ```bash
-# Clonar el repositorio
 git clone https://github.com/JavierQuinan/fullstack-javascript-project-137.git
-
-# Navegar al directorio
 cd fullstack-javascript-project-137
-
-# Instalar dependencias
 npm install
-
-# Iniciar servidor de desarrollo
 npm start
 ```
 
-> La aplicación estará disponible en **http://localhost:8080**
-
-### Scripts Disponibles
+## Build and quality commands
 
 ```bash
-npm start          # Inicia el servidor de desarrollo
-npm run build      # Crea el build de producción
-npm run lint       # Ejecuta el linter
-npm run lint:fix   # Corrige errores de linting automáticamente
-npm test           # Ejecuta los tests
-npm run preview    # Previsualiza el build de producción
+npm run build
+npm run lint
+npm run lint:fix
+npm run preview
 ```
 
----
+## Testing status
 
-## Cómo Usar
+`@playwright/test` is installed and the current `npm test` command invokes Playwright followed by linting. During this repository audit, however, no versioned Playwright test suite was found through the indexed repository contents. For that reason this README does **not** claim verified automated-test coverage yet.
 
-1. **Agrega un Feed RSS** - Ingresa la URL del feed en el campo de entrada
-2. **Valida Automáticamente** - El sistema verifica que sea un feed RSS válido
-3. **Visualiza Contenido** - Lee las publicaciones directamente en la aplicación
-4. **Actualización Continua** - Los feeds se actualizan automáticamente
+Before promoting Playwright as portfolio evidence, the repository should include a deterministic test suite (for example feed validation, successful load, duplicate URL, parsing failure and refresh behavior) and execute it in CI.
 
----
+## Engineering notes
 
-## Desarrollador
+The current implementation keeps state and rendering concerns separated: `init.js` coordinates validation/network operations while `watchers.js` handles UI reactions. RSS parsing lives in its own module.
 
-<div align="center">
+The application depends on an external proxy endpoint for cross-origin RSS retrieval. That dependency is appropriate to document because availability, rate limits and privacy characteristics of the proxy are outside this repository's control.
 
-### **Francisco Quinteros** 
-#### *"Quinan_Dev"*
+## Hardening backlog
 
-*Desarrollador Full Stack apasionado por crear soluciones web modernas y eficientes*
+- add and verify Playwright tests in CI;
+- remove leftover example/demo files that are not part of the application after confirming they have no grading dependency;
+- verify the configured Vercel deployment before treating it as a guaranteed live demo;
+- document error states and external-proxy dependency more explicitly in the UI;
+- review accessibility and Lighthouse metrics before flagship promotion.
 
----
+## Portfolio classification
 
-</div>
+**Category:** Frontend / reactive JavaScript evidence  
+**Visibility:** Public  
+**Portfolio priority:** Medium-high  
+**Current recommendation:** Keep as strong supporting frontend evidence; candidate for featured status after test and live-demo verification.
 
----
+## Author
 
-## 📄 Licencia
+Francisco Quinteros — [GitHub](https://github.com/JavierQuinan)
 
-ISC License - Consulta el archivo LICENSE para más detalles.
+## License
 
----
-
-## 🤝 Contribuciones
-## Contribuciones
-
-Las contribuciones son **bienvenidas y apreciadas**. Si encuentras un bug o tienes ideas para mejorar:
-
-1. **Fork** el proyecto
-2. Crea una **rama** para tu feature
-   ```bash
-   git checkout -b feature/NuevaCaracteristica
-   ```
-3. **Commit** tus cambios
-   ```bash
-   git commit -m 'Add: descripción de la característica'
-   ```
-4. **Push** a la rama
-   ```bash
-   git push origin feature/NuevaCaracteristica
-   ```
-5. Abre un **Pull Request**
-
----
-
-## Licencia
-
-Este proyecto está bajo la licencia **ISC**. Consulta el archivo LICENSE para más detalles.
-
----
-
-<div align="center">
-
-### Si este proyecto te fue útil, considera darle una estrella
-
-**Hecho por Francisco Quinteros "Quinan_Dev"**
-
-</div>
+ISC. Developed as part of the Hexlet learning path.
