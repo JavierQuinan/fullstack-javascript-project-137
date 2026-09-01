@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions)",
+  "description": "Reactive RSS reader with feed validation, periodic updates, i18n and Webpack tooling.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -16,8 +16,14 @@
     "type": "git",
     "url": "git+https://github.com/JavierQuinan/fullstack-javascript-project-137.git"
   },
-  "keywords": [],
-  "author": "Javier Quinan",
+  "keywords": [
+    "rss",
+    "javascript",
+    "webpack",
+    "i18next",
+    "frontend"
+  ],
+  "author": "Francisco Quinteros",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/JavierQuinan/fullstack-javascript-project-137/issues"
