@@ -27,3 +27,16 @@ rules:
   no-param-reassign: 0
   no-console: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
+
+overrides:
+  - files:
+      - "tests/**/*.js"
+      - "playwright.config.js"
+    rules:
+      import/no-extraneous-dependencies:
+        - error
+        - devDependencies: true
+      testing-library/prefer-screen-queries: off
+      testing-library/render-result-naming-convention: off
+      testing-library/no-node-access: off
+      testing-library/no-container: off
