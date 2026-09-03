@@ -4,12 +4,11 @@
 
 ### Reactive RSS aggregator built with JavaScript, Webpack and i18next
 
-[![Actions Status](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions)
+[![CI](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions/workflows/ci.yml/badge.svg)](https://github.com/JavierQuinan/fullstack-javascript-project-137/actions/workflows/ci.yml)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ESM-F7DF1E?logo=javascript&logoColor=black)
 ![Webpack](https://img.shields.io/badge/Webpack-5-8DD6F9?logo=webpack&logoColor=black)
+![Playwright](https://img.shields.io/badge/Playwright-Chromium-2EAD33?logo=playwright&logoColor=white)
 ![License](https://img.shields.io/badge/license-ISC-blue)
-
-[Configured Vercel demo](https://fullstack-javascript-project-137-nine.vercel.app/)
 
 </div>
 
@@ -17,28 +16,29 @@
 
 RSS Reader is a browser application for subscribing to RSS feeds, validating feed URLs, rendering posts and periodically checking subscribed feeds for new content.
 
-The project is maintained as **verifiable frontend engineering evidence**. It demonstrates reactive client state without a frontend framework, modular UI rendering, asynchronous network flows, RSS parsing and build tooling.
+The project is maintained as **verifiable frontend engineering evidence**. Current capabilities and observed CI results are documented here; possible future evolution lives separately in [`ROADMAP.md`](./ROADMAP.md).
 
 ## Verified capabilities
 
-- RSS URL validation with Yup
-- duplicate-feed prevention
-- requests through Axios and the AllOrigins proxy used by the project
-- RSS/XML parsing into feed and post models
-- reactive application state through `on-change`
-- separated UI watchers/rendering
-- periodic feed refresh after the previous request cycle completes
-- detection and insertion of newly published posts
-- modal post preview / read-state handling
-- internationalization with i18next
-- Bootstrap UI
-- Webpack production build
-- ESLint / Airbnb configuration
-- Vercel deployment configuration
+- RSS URL validation with Yup;
+- duplicate-feed prevention;
+- requests through Axios and the external proxy used by the project;
+- RSS/XML parsing into feed and post models;
+- reactive application state through `on-change`;
+- separated UI watchers/rendering;
+- periodic feed refresh after the previous request cycle completes;
+- detection and insertion of newly published posts;
+- modal post preview / read-state handling;
+- internationalization with i18next;
+- Bootstrap UI;
+- Webpack production build;
+- ESLint / Airbnb configuration;
+- Playwright Chromium smoke testing in GitHub Actions;
+- Vercel deployment configuration in the repository.
 
 ## Stack
 
-`JavaScript / ES Modules` · `Axios` · `Yup` · `i18next` · `on-change` · `Lodash` · `Bootstrap` · `Webpack` · `Babel` · `Sass` · `PostCSS` · `ESLint`
+`JavaScript / ES Modules` · `Axios` · `Yup` · `i18next` · `on-change` · `Lodash` · `Bootstrap` · `Webpack` · `Babel` · `Sass` · `PostCSS` · `ESLint` · `Playwright`
 
 ## Application flow
 
@@ -74,6 +74,9 @@ src/
   rss.js
   watchers.js
   locales/
+tests/
+  rss-reader.spec.js
+playwright.config.js
 webpack.config.js
 vercel.json
 package.json
@@ -84,45 +87,66 @@ package.json
 ```bash
 git clone https://github.com/JavierQuinan/fullstack-javascript-project-137.git
 cd fullstack-javascript-project-137
-npm install
+npm ci
 npm start
 ```
 
 ## Build and quality commands
 
 ```bash
-npm run build
 npm run lint
-npm run lint:fix
-npm run preview
+npm run build
+npx playwright test
 ```
 
-## Testing status
+## Observed quality evidence
 
-`@playwright/test` is installed and the current `npm test` command invokes Playwright followed by linting. During this repository audit, however, no versioned Playwright test suite was found through the indexed repository contents. For that reason this README does **not** claim verified automated-test coverage yet.
+The independent GitHub Actions workflow runs on Node 22 and executes lint, production build and Chromium Playwright smoke testing.
 
-Before promoting Playwright as portfolio evidence, the repository should include a deterministic test suite (for example feed validation, successful load, duplicate URL, parsing failure and refresh behavior) and execute it in CI.
+Observed results on the current hardening PR:
 
-## Engineering notes
+- ESLint — PASS;
+- Webpack production build — completed successfully with performance warnings;
+- Playwright — **1 passed**;
+- GitHub Actions quality job — **success**.
 
-The current implementation keeps state and rendering concerns separated: `init.js` coordinates validation/network operations while `watchers.js` handles UI reactions. RSS parsing lives in its own module.
+The current browser smoke test verifies that the RSS form renders and that malformed URLs are rejected without depending on the external feed proxy. This makes the automated browser evidence deterministic with respect to third-party network availability.
 
-The application depends on an external proxy endpoint for cross-origin RSS retrieval. That dependency is appropriate to document because availability, rate limits and privacy characteristics of the proxy are outside this repository's control.
+See [`ENGINEERING_EVIDENCE.md`](./ENGINEERING_EVIDENCE.md) for the detailed observed evidence.
 
-## Hardening backlog
+## Dependency, performance and external-service boundaries
 
-- add and verify Playwright tests in CI;
-- remove leftover example/demo files that are not part of the application after confirming they have no grading dependency;
-- verify the configured Vercel deployment before treating it as a guaranteed live demo;
-- document error states and external-proxy dependency more explicitly in the UI;
-- review accessibility and Lighthouse metrics before flagship promotion.
+The observed dependency install reported **36 npm audit findings** (`3 low`, `9 moderate`, `22 high`, `2 critical`). The repository is therefore not described as production-ready until the dependency graph is reviewed and remediated.
+
+The observed Webpack build also reported a combined main entrypoint around **458 KiB** and recommended code splitting. This is recorded as an optimization signal rather than hidden.
+
+The application depends on an external proxy for cross-origin RSS retrieval. Availability, rate limits and privacy characteristics of that proxy remain outside this repository's control.
+
+## Product & engineering roadmap
+
+[`ROADMAP.md`](./ROADMAP.md) preserves an ambitious future direction using:
+
+- ✅ implemented/evidenced;
+- 🔄 priority engineering direction;
+- 🧭 strategic evolution, not current functionality.
+
+The roadmap covers dependency hardening, parser/network testing, performance, accessibility, proxy architecture and potential RSS product capabilities such as categories, search, saved posts and OPML import/export.
+
+## Deployment note
+
+`vercel.json` and a deployment URL have existed for this project, but this README does **not** guarantee a currently healthy live deployment unless it is revalidated. Repository evidence remains usable without that external deployment.
 
 ## Portfolio classification
 
 **Category:** Frontend / reactive JavaScript evidence  
 **Visibility:** Public  
-**Portfolio priority:** Medium-high  
-**Current recommendation:** Keep as strong supporting frontend evidence; candidate for featured status after test and live-demo verification.
+**Classification:** `PORTFOLIO EVIDENCE` / supporting frontend project
+
+The strongest evidence is framework-free reactive state management, modular rendering, RSS parsing/network flows, build tooling, linting and a real Playwright CI smoke test.
+
+## Resumen en español
+
+Lector RSS en **JavaScript modular** con validación Yup, Axios, parser RSS/XML, estado reactivo mediante `on-change`, i18next, Webpack y Playwright. El CI actual ejecuta lint, build y un smoke test real en Chromium con resultado exitoso. La deuda de dependencias, el tamaño de bundle y la dependencia del proxy externo están documentados, mientras el roadmap conserva la evolución futura sin presentarla como funcionalidad actual.
 
 ## Author
 
