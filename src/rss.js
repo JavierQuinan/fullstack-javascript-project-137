@@ -40,5 +40,5 @@ export default (data) => {
     const description = descriptionElement.textContent;
     return { title, link, description };
   });
-  return { title: channelTitle, descrpition: channelDescription, items };
+  return { title: channelTitle, description: channelDescription, items };
 };
